@@ -13,8 +13,6 @@ let perPage = 40;
 let page = 0;
 let name = searchQuery.value;
 
-
-
 async function handligForm(event)  {
   event.preventDefault();
   gallery.innerHTML = '';
@@ -51,7 +49,6 @@ async function handligForm(event)  {
 }
 
 searchForm.addEventListener('submit', handligForm);
-
 
 function getGallery(name) {
   const markup = name.hits
