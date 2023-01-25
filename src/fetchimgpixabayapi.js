@@ -5,10 +5,10 @@ async function fetchImgPixabayAPI(name, page, perPage) {
     const KEY = '33037708-78be3fad6ecee7435e5675b43';
 
     try {
-      const response = await axios.get(
+      const resp = await axios.get(
         `${BASE_URL}?key=${KEY}&q=${name}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${perPage}`
       );
-      return response.data;
+      return resp.data;
     } catch (error) {
       console.log('ERROR: ' + error);
   }
