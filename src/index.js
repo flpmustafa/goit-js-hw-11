@@ -18,13 +18,15 @@ async function handligForm(event)  {
   gallery.innerHTML = '';
   btnLoadMore.style.display = 'none';
 
-  page = 1;
-  name = searchQuery.value;
+  let page = 1;
+  let name = searchQuery.value.trim();
+  if (name === '') {
+    return;
+  }
 
-  fetchImgPixabayAPI(name, page, perPage)
-    .then(name => {
+  try {  
+      await fetchImgPixabayAPI(name, page, perPage).then(name => {
       let totalPages = name.totalHits / perPage;
-
       if (name.hits.length > 0) {
         Notiflix.Notify.success(`Hooray! We found ${name.totalHits} images.`);
         getGallery(name);
@@ -44,8 +46,9 @@ async function handligForm(event)  {
         );
         gallery.innerHTML = '';
       }
-    })
-    .catch(error => console.log('ERROR: ' + error));
+    });
+  } catch { (error => console.log('ERROR: ' + error));
+}
 }
 
 searchForm.addEventListener('submit', handligForm);
@@ -95,10 +98,12 @@ function getGallery(name) {
 
 btnLoadMore.addEventListener(
   'click',
-  () => {
+  async () => {
     name = searchQuery.value;
     page += 1;
-    fetchImgPixabayAPI(name, page, perPage).then(name => {
+
+    try {
+    await fetchImgPixabayAPI(name, page, perPage).then(name => {
       let totalPages = name.totalHits / perPage;
       getGallery(name);
       new SimpleLightbox('.gallery a');
@@ -108,7 +113,7 @@ btnLoadMore.addEventListener(
           "We're sorry, but you've reached the end of search results."
         );
       }
-    });
+    });} catch { (error => console.log('ERROR: ' + error)); }
   },
   true
 );
