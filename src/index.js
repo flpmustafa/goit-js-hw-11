@@ -20,16 +20,18 @@ async function handligForm(event)  {
 
   let page = 1;
   let name = searchQuery.value.trim();
+  
   if (name === '') {
     return;
   }
 
-  try {  
-      await fetchImgPixabayAPI(name, page, perPage).then(name => {
-      let totalPages = name.totalHits / perPage;
-      if (name.hits.length > 0) {
-        Notiflix.Notify.success(`Hooray! We found ${name.totalHits} images.`);
-        getGallery(name);
+  try {
+      const data = await fetchImgPixabayAPI(name, page, perPage)
+      
+      let totalPages = data.totalHits / perPage;
+      if (data.hits.length > 0) {
+        Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
+        getGallery(data);
         new SimpleLightbox('.gallery a');
 
         if (page < totalPages) {
@@ -46,8 +48,7 @@ async function handligForm(event)  {
         );
         gallery.innerHTML = '';
       }
-    });
-  } catch { (error => console.log('ERROR: ' + error));
+    } catch { (error => console.log('ERROR: ' + error));
 }
 }
 
@@ -102,18 +103,19 @@ btnLoadMore.addEventListener(
     name = searchQuery.value;
     page += 1;
 
-    try {
-    await fetchImgPixabayAPI(name, page, perPage).then(name => {
-      let totalPages = name.totalHits / perPage;
-      getGallery(name);
+    try { 
+      const data = await fetchImgPixabayAPI(name, page, perPage)
+      let totalPages = data.totalHits / perPage;
+      getGallery(data);
       new SimpleLightbox('.gallery a');
+
       if (page >= totalPages) {
         btnLoadMore.style.display = 'none';
         Notiflix.Notify.info(
           "We're sorry, but you've reached the end of search results."
         );
       }
-    });} catch { (error => console.log('ERROR: ' + error)); }
+    } catch { (error => console.log('ERROR: ' + error)); }
   },
   true
 );
