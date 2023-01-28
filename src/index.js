@@ -18,8 +18,8 @@ async function handligForm(event)  {
   gallery.innerHTML = '';
   btnLoadMore.style.display = 'none';
 
-  let page = 1;
-  let name = searchQuery.value.trim();
+  page = 1;
+  name = searchQuery.value.trim();
   
   if (name === '') {
     return;
@@ -100,7 +100,7 @@ function getGallery(name) {
 btnLoadMore.addEventListener(
   'click',
   async () => {
-    name = searchQuery.value;
+    name = searchQuery.value.trim();
     page += 1;
 
     try { 
